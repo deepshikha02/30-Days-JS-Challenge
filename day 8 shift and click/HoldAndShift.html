@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+		<head>
+			<meta charset="UTF-8">
+			<title>Hold and Shift </title>
+		</head>
+		<body>
+			<style>
+				html {
+					 font-family: sans-serif;
+					background: #BADA55;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+				}
+
+				.inbox {
+					max-width: 400px;
+					min-width: 	300px;
+		   			margin: 50px;
+		    		background: white;
+		    		border: solid;
+		    		border-color: gray;
+		    		border-width: 5px;
+		    		border-radius: 10px;
+		    		box-shadow: 10px 10px 0 rgba(0,0,0,0.1);
+				}
+
+				.item {
+					display: flex;
+    				align-items: center;
+    				border-bottom: dotted;
+    				border-color: grey;
+    				border-width: 1px;
+				}
+
+				p {
+					margin:0;
+     				padding:10px;
+			        transition:background 0.2s;
+      				flex:1;
+      				font-family:'helvetica neue';
+      				font-size: 20px;
+      				font-weight: 200;
+    				border-left: 1px dotted grey;
+				}
+
+				input[type="checkbox"] {
+      				margin:10px;
+ 			   }
+
+ 			   input:checked + p {
+ 			   	 background:#F9F9F9;
+ 			   	 text-decoration: line-through;
+ 			   }
+
+
+			</style>
+			<div class="inbox">
+				<div class="item">
+					<input type="checkbox">
+					<p>item 1</p>
+				</div>
+				<div class="item">
+					<input type="checkbox">
+					<p>item 2</p>
+				</div>
+				<div class="item">
+					<input type="checkbox">
+					<p>item 3</p>
+				</div>
+				<div class="item">
+					<input type="checkbox">
+					<p>item 4</p>
+				</div>
+				<div class="item">
+					<input type="checkbox">
+					<p>item 5</p>
+				</div>
+				<div class="item">
+					<input type="checkbox">
+					<p>item 6</p>
+				</div>
+				<div class="item">
+					<input type="checkbox">
+					<p>item 7</p>
+				</div>
+				<div class="item">
+					<input type="checkbox">
+					<p>item 8</p>
+				</div>
+				<div class="item">
+					<input type="checkbox">
+					<p>item 9</p>
+				</div>
+				<div class="item">
+					<input type="checkbox">
+					<p>item 10</p>
+				</div>
+			</div>
+			<script type="text/javascript">
+				const checkboxes = document.querySelectorAll('.inbox input[type="checkbox"]');
+				let lastChecked;
+
+				function handleCheck(e){
+					let inBetween = false;
+					if(e.shiftKey && this.checked){
+						checkboxes.forEach(checkbox => {
+							if(checkbox === this || checkbox === lastChecked ){
+								inBetween = !inBetween;
+							}
+							if(inBetween){
+								checkbox.checked = true;
+							}
+						});
+					}
+					lastChecked = this;
+				}
+
+				checkboxes.forEach(checkbox => checkbox.addEventListener('click',handleCheck));
+			</script>
+		</body>
+</html>

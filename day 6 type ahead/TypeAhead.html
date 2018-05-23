@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Type Ahead </title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+		<link rel="stylesheet" href="style.css">
+	</head>
+	<body>
+		<form class="search-form">
+			<input type="text" class="search" placeholder="City Or State">
+			<ul class="suggestions">
+				<li>Filter for a city or state</li>
+			</ul>
+		</form>
+		<script>
+			const cities = [];
+			/*Tried using fetch but gave CORS issue*/
+			$.getJSON("data.json",function(data){
+				cities.push(...data);
+			});
+
+			function findMatches(wordToMatch){
+				return cities.filter(place => {
+					const regex = new RegExp(wordToMatch,'gi'); //g is for global, i is for case insensitivity
+					return place.name.match(regex) || place.state.match(regex);
+				});
+			}
+
+			function numberWithCommas(x) {
+		  		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+			}
+
+			function displayMatches(){
+				const matchArray = findMatches(this.value);
+				const html = matchArray.map(place =>{
+					const regex = new RegExp(this.value,'gi'); //g is for global, i is for case insensitivity
+					const cityName = place.name.replace(regex, `<span class="hl">${this.value}</span>`);
+					const stateName = place.state.replace(regex, `<span class="hl">${this.value}</span>`);
+					return `<li>
+						<span class="city"> ${cityName}</span>
+						<span class="state"> ${stateName}</span>
+					</li>`;
+				}).join('');
+				suggestions.innerHTML = html;
+			}
+			const searchInput = document.querySelector('.search');
+			const suggestions = document.querySelector('.suggestions');
+
+			searchInput.addEventListener('change',displayMatches);
+			searchInput.addEventListener('keyup',displayMatches);
+			
+		</script>
+	</body>
+</html>
